@@ -1,0 +1,30 @@
+#produto-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#produto-table th,
+#produto-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+#produto-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+/* Estilize o botão de exclusão */
+.excluir {
+    background-color: #dc3545;
+    border: none;
+    color: #fff;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+
+.excluir:hover {
+    background-color: #c82333;
+}
