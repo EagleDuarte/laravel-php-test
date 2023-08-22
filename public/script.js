@@ -1,23 +1,29 @@
 $(document).ready(function() {
+    // Função para renderizar a tabela de produtos
+    function renderizarTabelaProdutos(data) {
+        var tabela = $('#produto-table tbody');
+        tabela.empty();
+
+        data.forEach(function(produto) {
+            tabela.append(`
+                <tr>
+                    <td>${produto.id}</td>
+                    <td>${produto.nome}</td>
+                    <td>${produto.descricao}</td>
+                    <td>${produto.preco}</td>
+                    <td>${produto.quantidade}</td>
+                    <td>
+                        <button class="excluir" data-id="${produto.id}">Excluir</button>
+                    </td>
+                </tr>`
+            );
+        });
+    }
+
     // Função para carregar a lista de produtos via AJAX
     function carregarProdutos() {
         $.get('/produtos', function(data) {
-            $('#produto-table tbody').empty();
-
-            data.forEach(function(produto) {
-                $('#produto-table tbody').append(
-                    `<tr>
-                        <td>${produto.id}</td>
-                        <td>${produto.nome}</td>
-                        <td>${produto.descricao}</td>
-                        <td>${produto.preco}</td>
-                        <td>${produto.quantidade}</td>
-                        <td>
-                            <button class="excluir" data-id="${produto.id}" data-token="{{ csrf_token() }}">Excluir</button>
-                        </td>
-                    </tr>`
-                );
-            });
+            renderizarTabelaProdutos(data);
         });
     }
 
@@ -30,19 +36,22 @@ $(document).ready(function() {
         if (confirm('Tem certeza que deseja excluir este produto?')) {
             var csrfToken = $('meta[name="csrf-token"]').attr('content');
             console.log('Exclusão iniciada para o ID:', id);
-    
+
+            var deleteUrl = '/produtos/' + id;
             $.ajax({
-                url: '/produtos/' + id,
+                url: deleteUrl,
                 type: 'DELETE',
                 headers: {
-                    'X-CSRF-TOKEN': csrfToken // Inclui o token CSRF no cabeçalho
+                    'X-CSRF-TOKEN': csrfToken
                 },
                 success: function() {
                     console.log('Produto excluído com sucesso:', id);
-                    carregarProdutos(); // Carrega a lista atualizada após a exclusão
+                    carregarProdutos();
                 },
                 error: function(xhr, status, error) {
                     console.log('Erro ao excluir produto:', error);
+                    console.log('Status:', status);
+                    console.log('Response:', xhr.responseText);
                 }
             });
         }
