@@ -1,5 +1,4 @@
 $(document).ready(function() {
-    // Função para renderizar a tabela de produtos
     function renderizarTabelaProdutos(data) {
         var tabela = $('#produto-table tbody');
         tabela.empty();
@@ -20,17 +19,14 @@ $(document).ready(function() {
         });
     }
 
-    // Função para carregar a lista de produtos via AJAX
     function carregarProdutos() {
         $.get('/produtos', function(data) {
             renderizarTabelaProdutos(data);
         });
     }
 
-    // Carrega a lista de produtos ao carregar a página
     carregarProdutos();
 
-    // Função para confirmar a exclusão de um produto
     $(document).on('click', '.excluir', function() {
         var id = $(this).data('id');
         if (confirm('Tem certeza que deseja excluir este produto?')) {
